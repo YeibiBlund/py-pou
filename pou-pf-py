@@ -1,0 +1,65 @@
+import random
+
+state = {
+    "nombre": "Oscar",
+    "edad": 10,
+    "hambre": 20,
+    "energia": 0,
+    "felicidad": 0,
+    "salud": 100,
+}
+
+def minmax(value):
+    return max(0, min(value, 100))
+
+def status(state):
+    print("Nombre:", state["nombre"])
+    print("Edad:", state["edad"])
+    print("Hambre:", state["hambre"])
+    print("Energía:", state["energia"])
+    print("Felicidad:", state["felicidad"])
+    print("Salud:", state["salud"])
+
+def jugar(state):
+    new_state = dict(state)
+    new_state["hambre"] = minmax(state["hambre"] + random.randint(5, 10))
+    new_state["energia"] = minmax(state["energia"] - random.randint(5, 10))
+    new_state["felicidad"] = minmax(state["felicidad"] + random.randint(5, 10))
+    new_state["salud"] = minmax(state["salud"] - random.randint(0, 5))
+    new_state["edad"] += 1
+    return new_state
+
+def comer(state):
+    new_state = dict(state)
+    new_state["hambre"] = minmax(state["hambre"] - random.randint(3, 6))
+    new_state["energia"] = minmax(state["energia"] + random.randint(5, 10))
+    new_state["salud"] = minmax(state["salud"] + random.randint(1, 3))
+    new_state["edad"] += 1
+    return new_state
+
+def dormir(state):
+    new_state = dict(state)
+    new_state["energia"] = minmax(state["energia"] + random.randint(10, 20))
+    new_state["hambre"] = minmax(state["hambre"] + random.randint(1, 3))
+    new_state["salud"] = minmax(state["salud"] + random.randint(5, 10))
+    new_state["edad"] += 1
+    return new_state
+
+def menu():
+    return input("¿Qué quieres hacer? (1) Jugar, (2) Comer, (3) Dormir: ")
+
+# Inicializar el juego
+while state["salud"] > 0:
+    status(state)
+    opcion = menu()
+
+    if opcion == "1":
+        state = jugar(state)
+    elif opcion == "2":
+        state = comer(state)
+    elif opcion == "3":
+        state = dormir(state)
+    else:
+        print("Opción no válida. Intenta de nuevo.")
+
+print("Fin del juego.")
